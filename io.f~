@@ -85,38 +85,46 @@ ccccccccccccccccccccccccccccccccccc
       if(lflag.ne.0)goto 110
       if(mbdyl.ne.-2)goto 110
 c     left open bc
+      print *, 'left boundary is open'
       do 102 i = 1,3
       q(i,-1) = q(i,1)
 102   q(i,0)  = q(i,1)
       lflag = 1
+      print *, 'lflag is ', lflag
 110   continue
 
       if(rflag.ne.0)goto 120
       if(mbdyr.ne.-2)goto 120
+      print *, 'right boundary is open'
       do 103 i = 1,3
 c     right open bc
       q(i,nx+1) = q(i,nx)
 103   q(i,nx+2) = q(i,nx)
       rflag = 1
+      print *, 'rflag is ', rflag
 120   continue
 
       data sne/1.,-1,1./
       if(lflag.ne.0)goto 130
       if(mbdyl .ne. 1 .and. lflag .ne. 0)goto 130
+      print *, 'left boundary is reflecting'
 c     left reflecting bc
       do 104 i = 1,3
       q(i,-1) = sne(i)*q(i,2)
 104   q(i,0)  = sne(i)*q(i,1)
       lflag = 1
+      print *, 'lflag is ', lflag
 130   continue
       
       if(rflag.ne.0)goto 140
       if(mbdyr .ne. 1 .and. rflag .ne. 0)goto 140
+      print *, 'right boundary is reflecting'
 c     right reflecting bc
       do 105 i = 1,3
       q(i,nx+1) = sne(i)*q(i,nx)
       q(i,nx+2) = sne(i)*q(i,nx-1)
 105   rflag = 1
+      print *, 'rflag is ', rflag
 140   continue
       
       if(rflag .ne. 1 .or. lflag .ne. 1)goto 150
@@ -124,6 +132,7 @@ c     right reflecting bc
 150   continue
       
 c     periodic boundaries
+      print *, 'periodic boudaries'
       do 106 i = 1,3
       q(i,-1) = q(i,nx-2)
       q(i,0) = q(i,nx-1)

@@ -35,8 +35,8 @@ cccccccccccccccccccccccccccccccccccc
       read(5,*)rho1, u1, p1
       write(*,*)'enter right state: rho, u, p'
       read(5,*)rho2, u2, p2
-      write(*,*)'enter left boundary type, ', 
-     +'right boundary type, and courant number'
+      write(*,*)'enter right boundary type, ', 
+     +'left boundary type, and courant number'
       read(5,*)mbdyl, mbdyr, cour
       write(*,*)'enter tstart, tstop, tdump'
       read(5,*)tstart, tstop, tdump
@@ -80,49 +80,39 @@ c     boundary conditions
 ccccccccccccccccccccccccccccccccccc
       include "common.inc"
       dimension sne(3)
-      lflag = 0
-      rflag = 0
-      if(lflag.ne.0)goto 110
       if(mbdyl.ne.-2)goto 110
 c     left open bc
       do 102 i = 1,3
       q(i,-1) = q(i,1)
 102   q(i,0)  = q(i,1)
-      lflag = 1
+      return
 110   continue
 
-      if(rflag.ne.0)goto 120
       if(mbdyr.ne.-2)goto 120
       do 103 i = 1,3
 c     right open bc
       q(i,nx+1) = q(i,nx)
 103   q(i,nx+2) = q(i,nx)
-      rflag = 1
+      return
 120   continue
 
       data sne/1.,-1,1./
-      if(lflag.ne.0)goto 130
-      if(mbdyl .ne. 1 .and. lflag .ne. 0)goto 130
+      if(mbdyl .ne. 1)goto 130
 c     left reflecting bc
       do 104 i = 1,3
       q(i,-1) = sne(i)*q(i,2)
 104   q(i,0)  = sne(i)*q(i,1)
-      lflag = 1
+      return
 130   continue
-      
-      if(rflag.ne.0)goto 140
-      if(mbdyr .ne. 1 .and. rflag .ne. 0)goto 140
+
+      if(mbdyr .ne. 1)goto 140
 c     right reflecting bc
       do 105 i = 1,3
       q(i,nx+1) = sne(i)*q(i,nx)
       q(i,nx+2) = sne(i)*q(i,nx-1)
-105   rflag = 1
+105   return
 140   continue
-      
-      if(rflag .ne. 1 .or. lflag .ne. 1)goto 150
-      return
-150   continue
-      
+
 c     periodic boundaries
       do 106 i = 1,3
       q(i,-1) = q(i,nx-2)
@@ -136,7 +126,7 @@ cccccccccccccccccccccccccccccccccccc
 c     output data
 cccccccccccccccccccccccccccccccccccc
       include "common.inc"
-c       print *,'dump at time ',t
+        print *,'dump at time ',t
         do 101 i = 1,nx
         u = q(2,i)/q(1,i)
         p = (gam - 1.)*(q(3,i) - 0.5*q(2,i)*q(2,i)/q(1,i))
