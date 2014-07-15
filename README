@@ -1,0 +1,10 @@
+This primative version of the tvd code has only two fortran
+files to compile and link.
+The main routine is in io.f. The init routine reads from
+standard in. An example input file is included.
+The hydro variables are q1,q2, and q3, which are the mass density, the
+momentum density and the total energy density. The code is Eulerian.
+The TVD routine is basically a Godunov scheme that uses an eigenstate
+method to get an approximate Riemann solution. The method is the one
+devised by Harten, so the monotonicity constraint is achieved with a 
+function defined in terms of a parameter epsilon. 
