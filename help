@@ -1,3 +1,10 @@
 Jump conditions:
 Wolfram Alpha:
 a*b = d*e, a*b^2 +c = d*e^2 + f, 1/2*b^2 + 5/2*c/a = 1/2*e^2 + 5/2*f/d, a = 1, b = 3, c = 1
+
+
+
+current:
+a*b = d*e, a*b^2 +c = d*e^2 + f, 1/2*b^2 + 5/2*c/a = 1/2*e^2 + 5/2*f/d, e=1+b, d = 1, f = 1
+
+
