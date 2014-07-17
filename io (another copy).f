@@ -41,7 +41,6 @@ cccccccccccccccccccccccccccccccccccc
       write(*,*)'enter tstart, tstop, tdump'
       read(5,*)tstart, tstop, tdump
       close(5)
-      k = p1/rho1**gam
       xmin = 0.
       xmax = 1.
       dx = (xmax - xmin)/float(nx)
@@ -70,13 +69,7 @@ c     p = p1
       if(i.lt.1 .or. i .gt. nx)goto 100
       u = q(2,i)/q(1,i)
       ent = p/(q(1,i)**gam)
-      jplus = u + 2*gami1*(gam*p/q(1,i))**(0.5)
-      jminus = u - 2*gami1*(gam*p/q(1,i))**(0.5)
-      trho = (((gam-1.0)*(jplus-jminus)/4.0)**2.0/(gam*k))**gami1
-      tp = k*trho**(gam)
-      tu = (jplus+jminus)/2.0
-      write(10,'(10(1pe15.6))')x(i),q(1,i),u,p, ent, jplus, jminus,
-     + trho,tu,tp
+      write(10,'(5(1pe15.6))')x(i),q(1,i),u,p, ent
 100   continue
       return
       end
@@ -148,12 +141,6 @@ c       print *,'dump at time ',t
         u = q(2,i)/q(1,i)
         p = (gam - 1.)*(q(3,i) - 0.5*q(2,i)*q(2,i)/q(1,i))
         ent = p/(q(1,i)**gam)
-        jplus = u + 2.0*gami1*(gam*p/q(1,i))**(0.5)
-        jminus = u - 2.0*gami1*(gam*p/q(1,i))**(0.5)
-        trho = (((gam-1.0)*(jplus-jminus)/4.0)**2.0/(gam*k))**gami1
-        tp = k*trho**(gam)
-        tu = (jplus+jminus)/2.0
-101     write(10,'(10(1pe15.6))')x(i),q(1,i),u,p,ent,jplus,jminus,
-     +   trho,tu,tp
+101     write(10,'(5(1pe15.6))')x(i),q(1,i),u,p, ent
       return
       end

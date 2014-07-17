@@ -1,10 +1,14 @@
-Jump conditions:
+Jump conditions (in frame of shock):
 Wolfram Alpha:
 a*b = d*e, a*b^2 +c = d*e^2 + f, 1/2*b^2 + 5/2*c/a = 1/2*e^2 + 5/2*f/d, a = 1, b = 3, c = 1
 
+calculate the conditions when crashing fluid into a reflecting wall:
+b is the shock speed and in this 
+a*b = d*e, a*b^2 +c = d*e^2 + f, 1/2*b^2 + 5/2*c/a = 1/2*e^2 + 5/2*f/d, e=b-u, d = 1, f = 1, u = 1
 
-
-current:
-a*b = d*e, a*b^2 +c = d*e^2 + f, 1/2*b^2 + 5/2*c/a = 1/2*e^2 + 5/2*f/d, e=1+b, d = 1, f = 1
-
-
+jump conditions moving shock: (primed frame is moving shock frame [downstream at rest] and unprimed frame is shock frame)
+u1 = -Vs
+u2 = u2' - Vs
+-rho1*Vs = rho2 (u2' - Vs)
+rho1*Vs^2 +P1 = rho2*(u2' - Vs)^2 + P2
+1/2Vs^2 + gam/(gam-1)*P1/rho1 = 1/2*(u2' - Vs)^2 + gam/(gam-1)*P2/rho2 

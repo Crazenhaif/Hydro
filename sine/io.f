@@ -31,7 +31,7 @@ cccccccccccccccccccccccccccccccccccc
       gam = 5./3.
       gami1 = 1./(gam -1.)
       open(unit = 5, file = 'input')
-      write(*,*)'enter left state: rho, u, p'
+      write(*,*)'enter equilibrium density, '
       read(5,*)rho1, u1, p1
       write(*,*)'enter right state: rho, u, p'
       read(5,*)rho2, u2, p2
