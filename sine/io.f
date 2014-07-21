@@ -31,10 +31,14 @@ cccccccccccccccccccccccccccccccccccc
       gam = 5./3.
       gami1 = 1./(gam -1.)
       open(unit = 5, file = 'input')
-      write(*,*)'enter equilibrium density, '
-      read(5,*)rho1, u1, p1
-      write(*,*)'enter right state: rho, u, p'
-      read(5,*)rho2, u2, p2
+      write(*,*)'enter equilibrium density, velocity and pressure'
+      read(5,*)rhoE, uE, pE
+      write(*,*)'enter amplitude of density, velocity, and pressure'
+      read(5,*)rhoA, uA, pA
+      write(*,*)'enter wavenumber of density, velocity, and pressure'
+      read(5,*)rhok,uk,pk
+      write(*,*)'enter phase of density, velocity, and pressure'
+      read(5,*)rho0,u0,p0
       write(*,*)'enter right boundary type, ', 
      +'left boundary type, and courant number'
       read(5,*)mbdyl, mbdyr, cour
@@ -48,24 +52,10 @@ c     initial conditions
 c     write dump of initial values
       do 100 i = -1, nx+2
       x(i) = xmin +(i - 0.5)*dx
-c     if(i .le. nx/3)then
-      if(i .le. nx/2)then
-      q(1,i) = rho1
-      q(2,i) = rho1 * u1
-      q(3,i) = gami1*p1 + 0.5*rho1*u1*u1
-      p = p1
-      else
-c     elseif(i. le. 2*nx/3)then
-      q(1,i) = rho2
-      q(2,i) = rho2 * u2
-      q(3,i) = gami1*p2 + 0.5*rho2*u2*u2
-      p = p2
-c     else
-c     q(1,i) = rho1
-c     q(2,i) = rho1 * u1
-c     q(3,i) = gami1*p1 + 0.5*rho1*u1*u1
-c     p = p1
-      endif
+      q(1,i) = rhoA * SIN(rhok*x(i)+rho0) +rhoE
+      q(2,i) = uA * SIN(uk*x(i)+u0) * q(1,i) + uE
+      p = pA*SIN(pk*x(i)+p0) + pE
+      q(3,i) = gami1*p + 0.5*q(2,i)*q(2,i)/(q(1,i))
       if(i.lt.1 .or. i .gt. nx)goto 100
       u = q(2,i)/q(1,i)
       ent = p/(q(1,i)**gam)
@@ -109,8 +99,8 @@ c     left reflecting bc
 c     right reflecting bc
       do 105 i = 1,3
       q(i,nx+1) = sne(i)*q(i,nx)
-      q(i,nx+2) = sne(i)*q(i,nx-1)
-105   return
+105   q(i,nx+2) = sne(i)*q(i,nx-1)
+      return
 140   continue
 
 c     periodic boundaries

@@ -144,15 +144,21 @@ c     output data
 cccccccccccccccccccccccccccccccccccc
       include "common.inc"
 c       print *,'dump at time ',t
+        jminusval = q(2,128)/q(1,128) - 2.0*gami1*(gam*
+     + ((gam-1.0)*(q(3,128) - 0.5*q(2,128)*q(2,128)/(q(1,128))))
+     + /(q(1,128)))**(0.5)
         do 101 i = 1,nx
         u = q(2,i)/q(1,i)
         p = (gam - 1.)*(q(3,i) - 0.5*q(2,i)*q(2,i)/q(1,i))
         ent = p/(q(1,i)**gam)
         jplus = u + 2.0*gami1*(gam*p/q(1,i))**(0.5)
         jminus = u - 2.0*gami1*(gam*p/q(1,i))**(0.5)
-        trho = (((gam-1.0)*(jplus-jminus)/4.0)**2.0/(gam*k))**gami1
-        tp = k*trho**(gam)
-        tu = (jplus+jminus)/2.0
+	tu = (jplus+jminusval)/2.0
+        trho = ((tu-jminusval)/(2*gami1*(gam*k)**(0.5)))**(2*gami1)
+        tp = k *trho**gam
+c        trho = (((gam-1.0)*(jplus-jminus)/4.0)**2.0/(gam*k))**gami1
+c        tp = k*trho**(gam)
+c        tu = (jplus+jminus)/2.0
 101     write(10,'(10(1pe15.6))')x(i),q(1,i),u,p,ent,jplus,jminus,
      +   trho,tu,tp
       return
