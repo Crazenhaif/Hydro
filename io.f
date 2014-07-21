@@ -153,7 +153,7 @@ c       print *,'dump at time ',t
         ent = p/(q(1,i)**gam)
         jplus = u + 2.0*gami1*(gam*p/q(1,i))**(0.5)
         jminus = u - 2.0*gami1*(gam*p/q(1,i))**(0.5)
-	tu = (jplus+jminusval)/2.0
+	tu = ((gam - 1.0)*jminusval + 2*(x(i)/t))/(gam+1.0)
         trho = ((tu-jminusval)/(2*gami1*(gam*k)**(0.5)))**(2*gami1)
         tp = k *trho**gam
 c        trho = (((gam-1.0)*(jplus-jminus)/4.0)**2.0/(gam*k))**gami1
