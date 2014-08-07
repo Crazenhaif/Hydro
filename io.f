@@ -154,15 +154,21 @@ c       print *,'dump at time ',t
         jminusval = q(2,128)/q(1,128) - 2.0*gami1*(gam*
      + ((gam-1.0)*(q(3,128) - 0.5*q(2,128)*q(2,128)/(q(1,128))))
      + /(q(1,128)))**(0.5)
+        c1 = (1.0-gam)/2.0*jminusval
         do 101 i = 1,nx
         rarefaction = 0
-        if(c0*t .le. x(i))goto 160
-        rarefaction = 1
-160     continue
-        if(c0*t .ge. x(i) .and. )goto 161
-161     continue
-        if()goto 162
-162     continue
+        if((c0+u0)*t .lt. x(i))then
+c (if before rarefaction)
+           rarefaction = 1
+        else if((c0+u0)*t .gt. x(i) .and. c1*t .lt. x(i)) then
+c (if inside rarefaction)
+           rarefaction = 2
+        else if(c1*t .gt. x(i)) then
+c (if after rarefaction)
+           rarefaction = 3
+        else
+           rarefaction = 0
+        end if
         u = q(2,i)/q(1,i)
         p = (gam - 1.)*(q(3,i) - 0.5*q(2,i)*q(2,i)/q(1,i))
         ent = p/(q(1,i)**gam)
@@ -173,22 +179,34 @@ c       print *,'dump at time ',t
         tu = 0
         tp = 0
 ccccccc before the rarefaction cccccccccc
-        if()goto 170
+        if(rarefaction .eq. 1) then 
         tu = u0
         cs = c0
         trho = (cs**2.0/(gam*k))**gami1
         tp = k*trho**gam
-170     continue
+        end if
 ccccccc inside the rarefaction cccccccccc
-        if()goto 180
+        if(rarefaction .eq. 2) then
         cs = 2.0/(gam+1)*c0 + (gam-1.0)/(gam+1.0)*(x(i)/t-u0)
-        trho = (cs/(gam*k))**gami1
+        trho = (cs**2.0/(gam*k))**gami1
         tu = jminusval + 2.0*cs*gami1
         tp = k *trho**gam
-180     continue
+        end if
 cccccc after the rarefaction ccccccccc
-        if()goto 190
-190     continue
+        if(rarefaction .eq. 3) then
+        cs = (1.0-gam)/2.0*jminusval
+        trho = (cs**2.0/(gam*k))**gami1
+        tu = 0
+        tp = k *trho**gam
+        end if
+        if(rarefaction .eq. 0) then
+cccccc If something failed cccccccccccc
+        print *, 'rarefaction flag failed'
+        cs = 0
+        trho = 0
+        tu = 0
+        tp = 0
+        end if
 101     write(10,'(10(1pe15.6))')x(i),q(1,i),u,p,ent,jplus,jminus,
      +   trho,tu,tp
       return
