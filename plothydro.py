@@ -14,9 +14,10 @@ def plothyd(x,rho,u,p,h,plotnum,jp,jm,trho,tu,tp):
     hplt = h[start:end]
     jpplt = jp[start:end]
     jmplt = jm[start:end]
-    trhoplt = trho[start:end]
-    tuplt = tu[start:end]
-    tpplt = tp[start:end]
+    txplt = x[start:end:10]
+    trhoplt = trho[start:end:10]
+    tuplt = tu[start:end:10]
+    tpplt = tp[start:end:10]
     
     rhomax = numpy.amax(abs(rho))
     umax = numpy.amax(abs(u))
@@ -39,14 +40,14 @@ def plothyd(x,rho,u,p,h,plotnum,jp,jm,trho,tu,tp):
     tpplt = tpplt/tpmax
     
     plt.plot(xplt,rhoplt)
-    plt.plot(xplt, trhoplt, 'k.',markersize=2)
+    plt.plot(txplt, trhoplt, 'kx',markersize=5)
     plt.plot(xplt, uplt+1.5, 'r')
-    plt.plot(xplt, tuplt+1.5, 'k.',markersize=2)
+    plt.plot(txplt, tuplt+1.5, 'kx',markersize=5)
     plt.axhline(y=1.5,xmin =0,xmax = 1,color = 'k')
     plt.axhline(y=3,xmin =0,xmax = 1,color = 'k')
     plt.axhline(y=5,xmin =0,xmax = 1,color = 'k')
     plt.plot(xplt, pplt+3, 'g')
-    plt.plot(xplt, tpplt+3, 'k.',markersize=2)
+    plt.plot(txplt, tpplt+3, 'kx',markersize=5)
     plt.plot(xplt,jpplt+5,'b')
     plt.plot(xplt,jmplt+5,'r')
     plt.ylim(0,6)
